@@ -1,0 +1,198 @@
+export const TEAM_COLORS = {
+  'Mumbai Indians': { primary: '#004BA0', secondary: '#D1AB3E', accent: '#00A0E3' },
+  'Chennai Super Kings': { primary: '#FDB913', secondary: '#0081C8', accent: '#FDB913' },
+  'Kolkata Knight Riders': { primary: '#3A225D', secondary: '#B3A123', accent: '#7B5EA7' },
+  'Sunrisers Hyderabad': { primary: '#FF822A', secondary: '#000000', accent: '#FF5C00' },
+  'Rajasthan Royals': { primary: '#2D4EA2', secondary: '#EA1A85', accent: '#EA1A85' },
+  'Delhi Capitals': { primary: '#0078BC', secondary: '#EF1C25', accent: '#0078BC' },
+  'Gujarat Titans': { primary: '#1C2B5E', secondary: '#97C5E3', accent: '#97C5E3' },
+  'Punjab Kings': { primary: '#ED1B24', secondary: '#A7A9AC', accent: '#ED1B24' },
+  'Royal Challengers Bangalore': { primary: '#EC1C24', secondary: '#000000', accent: '#A4072B' },
+  'Royal Challengers Bengaluru': { primary: '#EC1C24', secondary: '#000000', accent: '#A4072B' },
+  'Lucknow Super Giants': { primary: '#A72B72', secondary: '#FBDB34', accent: '#A72B72' },
+};
+
+export const TEAM_ABBR = {
+  'Mumbai Indians': 'MI',
+  'Chennai Super Kings': 'CSK',
+  'Kolkata Knight Riders': 'KKR',
+  'Sunrisers Hyderabad': 'SRH',
+  'Rajasthan Royals': 'RR',
+  'Delhi Capitals': 'DC',
+  'Gujarat Titans': 'GT',
+  'Punjab Kings': 'PBKS',
+  'Royal Challengers Bangalore': 'RCB',
+  'Royal Challengers Bengaluru': 'RCB',
+  'Lucknow Super Giants': 'LSG',
+  'Deccan Chargers': 'DC',
+  'Delhi Daredevils': 'DD',
+  'Kings XI Punjab': 'KXIP',
+  'Kochi Tuskers Kerala': 'KTK',
+  'Pune Warriors': 'PW',
+  'Rising Pune Supergiant': 'RPS',
+  'Rising Pune Supergiants': 'RPS',
+  'Gujarat Lions': 'GL',
+};
+
+export const TEAM_STATS = {
+  'Mumbai Indians': { total_matches: 261, wins: 144, losses: 117, win_rate: 55.2, avg_score: 161.6 },
+  'Chennai Super Kings': { total_matches: 237, wins: 138, losses: 99, win_rate: 58.2, avg_score: 163.0 },
+  'Kolkata Knight Riders': { total_matches: 251, wins: 131, losses: 120, win_rate: 52.2, avg_score: 156.7 },
+  'Sunrisers Hyderabad': { total_matches: 182, wins: 88, losses: 94, win_rate: 48.4, avg_score: 159.7 },
+  'Rajasthan Royals': { total_matches: 219, wins: 112, losses: 107, win_rate: 51.1, avg_score: 157.9 },
+  'Delhi Capitals': { total_matches: 91, wins: 48, losses: 43, win_rate: 52.7, avg_score: 163.7 },
+  'Gujarat Titans': { total_matches: 45, wins: 28, losses: 17, win_rate: 62.2, avg_score: 172.4 },
+  'Punjab Kings': { total_matches: 56, wins: 24, losses: 32, win_rate: 42.9, avg_score: 170.3 },
+  'Lucknow Super Giants': { total_matches: 43, wins: 24, losses: 19, win_rate: 55.8, avg_score: 170.7 },
+  'Royal Challengers Bangalore': { total_matches: 237, wins: 116, losses: 121, win_rate: 48.9, avg_score: 157.1 },
+  'Royal Challengers Bengaluru': { total_matches: 15, wins: 7, losses: 8, win_rate: 46.7, avg_score: 195.3 },
+};
+
+export const IPL_TEAMS = [
+  'Mumbai Indians', 'Chennai Super Kings', 'Kolkata Knight Riders',
+  'Sunrisers Hyderabad', 'Rajasthan Royals', 'Delhi Capitals',
+  'Gujarat Titans', 'Punjab Kings', 'Lucknow Super Giants',
+  'Royal Challengers Bangalore',
+];
+
+export const IPL_VENUES = [
+  'Wankhede Stadium',
+  'M Chinnaswamy Stadium',
+  'Eden Gardens',
+  'MA Chidambaram Stadium',
+  'Rajiv Gandhi International Cricket Stadium',
+  'Punjab Cricket Association Stadium, Mohali',
+  'Sawai Mansingh Stadium',
+  'Arun Jaitley Stadium',
+  'Narendra Modi Stadium',
+  'DY Patil Sports Academy',
+  'Brabourne Stadium',
+  'Maharashtra Cricket Association Stadium',
+  'JSCA International Stadium Complex',
+  'Bharat Ratna Shri Atal Bihari Vajpayee Ekana Cricket Stadium',
+];
+
+export const H2H_DATA = {
+  'Mumbai Indians|Chennai Super Kings': { t1_wins: 19, t2_wins: 18, total: 37 },
+  'Mumbai Indians|Kolkata Knight Riders': { t1_wins: 16, t2_wins: 14, total: 30 },
+  'Mumbai Indians|Sunrisers Hyderabad': { t1_wins: 13, t2_wins: 9, total: 22 },
+  'Mumbai Indians|Rajasthan Royals': { t1_wins: 15, t2_wins: 12, total: 27 },
+  'Mumbai Indians|Delhi Capitals': { t1_wins: 14, t2_wins: 10, total: 24 },
+  'Chennai Super Kings|Kolkata Knight Riders': { t1_wins: 19, t2_wins: 15, total: 34 },
+  'Chennai Super Kings|Rajasthan Royals': { t1_wins: 15, t2_wins: 13, total: 28 },
+  'Chennai Super Kings|Sunrisers Hyderabad': { t1_wins: 14, t2_wins: 9, total: 23 },
+  'Chennai Super Kings|Royal Challengers Bangalore': { t1_wins: 20, t2_wins: 13, total: 33 },
+  'Kolkata Knight Riders|Rajasthan Royals': { t1_wins: 12, t2_wins: 11, total: 23 },
+  'Kolkata Knight Riders|Sunrisers Hyderabad': { t1_wins: 11, t2_wins: 10, total: 21 },
+  'Rajasthan Royals|Sunrisers Hyderabad': { t1_wins: 9, t2_wins: 8, total: 17 },
+  'Royal Challengers Bangalore|Sunrisers Hyderabad': { t1_wins: 11, t2_wins: 11, total: 22 },
+  'Mumbai Indians|Royal Challengers Bangalore': { t1_wins: 17, t2_wins: 13, total: 30 },
+  'Delhi Capitals|Rajasthan Royals': { t1_wins: 8, t2_wins: 6, total: 14 },
+};
+
+export const SEASON_DATA = {
+  'Mumbai Indians': [
+    {s:'2008',w:7,m:14},{s:'2009',w:5,m:13},{s:'2010',w:11,m:16},
+    {s:'2011',w:10,m:16},{s:'2012',w:10,m:17},{s:'2013',w:13,m:19},
+    {s:'2014',w:7,m:15},{s:'2015',w:10,m:16},{s:'2016',w:7,m:14},
+    {s:'2017',w:12,m:17},{s:'2018',w:6,m:14},{s:'2019',w:11,m:16},
+    {s:'2020',w:11,m:16},{s:'2021',w:7,m:14},{s:'2022',w:4,m:14},
+    {s:'2023',w:9,m:16},{s:'2024',w:4,m:14},
+  ],
+  'Chennai Super Kings': [
+    {s:'2008',w:9,m:16},{s:'2009',w:8,m:14},{s:'2010',w:9,m:16},
+    {s:'2011',w:11,m:16},{s:'2012',w:10,m:18},{s:'2013',w:12,m:18},
+    {s:'2014',w:10,m:16},{s:'2015',w:10,m:17},{s:'2018',w:11,m:16},
+    {s:'2019',w:10,m:17},{s:'2020',w:6,m:14},{s:'2021',w:11,m:16},
+    {s:'2022',w:4,m:14},{s:'2023',w:10,m:15},{s:'2024',w:7,m:14},
+  ],
+  'Kolkata Knight Riders': [
+    {s:'2008',w:6,m:13},{s:'2009',w:3,m:13},{s:'2010',w:7,m:14},
+    {s:'2011',w:8,m:15},{s:'2012',w:12,m:17},{s:'2013',w:6,m:16},
+    {s:'2014',w:11,m:16},{s:'2015',w:7,m:13},{s:'2016',w:8,m:15},
+    {s:'2017',w:9,m:16},{s:'2018',w:9,m:16},{s:'2019',w:6,m:14},
+    {s:'2020',w:7,m:14},{s:'2021',w:9,m:17},{s:'2022',w:6,m:14},
+    {s:'2023',w:6,m:14},{s:'2024',w:11,m:14},
+  ],
+  'Rajasthan Royals': [
+    {s:'2008',w:13,m:16},{s:'2009',w:6,m:13},{s:'2010',w:6,m:14},
+    {s:'2011',w:6,m:13},{s:'2012',w:7,m:16},{s:'2013',w:11,m:18},
+    {s:'2014',w:7,m:14},{s:'2015',w:7,m:13},{s:'2018',w:7,m:15},
+    {s:'2019',w:5,m:13},{s:'2020',w:6,m:14},{s:'2021',w:5,m:14},
+    {s:'2022',w:10,m:17},{s:'2023',w:7,m:14},{s:'2024',w:9,m:15},
+  ],
+  'Sunrisers Hyderabad': [
+    {s:'2013',w:10,m:17},{s:'2014',w:6,m:14},{s:'2015',w:7,m:14},
+    {s:'2016',w:11,m:17},{s:'2017',w:8,m:14},{s:'2018',w:10,m:17},
+    {s:'2019',w:6,m:15},{s:'2020',w:8,m:16},{s:'2021',w:3,m:14},
+    {s:'2022',w:6,m:14},{s:'2023',w:4,m:14},{s:'2024',w:9,m:16},
+  ],
+  'Royal Challengers Bangalore': [
+    {s:'2008',w:4,m:14},{s:'2009',w:8,m:14},{s:'2010',w:9,m:16},
+    {s:'2011',w:9,m:16},{s:'2012',w:9,m:16},{s:'2013',w:6,m:16},
+    {s:'2014',w:7,m:14},{s:'2015',w:9,m:16},{s:'2016',w:13,m:16},
+    {s:'2017',w:5,m:14},{s:'2018',w:6,m:14},{s:'2019',w:5,m:14},
+    {s:'2020',w:7,m:15},{s:'2021',w:9,m:14},{s:'2022',w:8,m:14},
+    {s:'2023',w:7,m:14},{s:'2024',w:6,m:14},
+  ],
+};
+
+export const TOP_BATTERS = [
+  { batter:'V Kohli', runs:8014, strike_rate:128.5, avg:32.8, fours:556, sixes:347, innings:244 },
+  { batter:'S Dhawan', runs:6769, strike_rate:123.5, avg:30.6, fours:668, sixes:227, innings:221 },
+  { batter:'RG Sharma', runs:6630, strike_rate:127.9, avg:26.4, fours:504, sixes:494, innings:251 },
+  { batter:'DA Warner', runs:6567, strike_rate:135.4, avg:35.7, fours:559, sixes:455, innings:184 },
+  { batter:'SK Raina', runs:5536, strike_rate:132.5, avg:27.7, fours:510, sixes:354, innings:200 },
+  { batter:'MS Dhoni', runs:5243, strike_rate:132.8, avg:23.0, fours:318, sixes:341, innings:228 },
+  { batter:'AB de Villiers', runs:5181, strike_rate:148.6, avg:30.5, fours:391, sixes:388, innings:170 },
+  { batter:'CH Gayle', runs:4997, strike_rate:142.1, avg:35.4, fours:422, sixes:355, innings:141 },
+  { batter:'RV Uthappa', runs:4954, strike_rate:126.2, avg:25.1, fours:452, sixes:248, innings:197 },
+  { batter:'KD Karthik', runs:4843, strike_rate:131.4, avg:20.8, fours:376, sixes:254, innings:233 },
+  { batter:'AM Rahane', runs:4777, strike_rate:115.2, avg:24.5, fours:477, sixes:149, innings:195 },
+  { batter:'SR Watson', runs:4625, strike_rate:137.8, avg:26.2, fours:413, sixes:301, innings:145 },
+  { batter:'KL Rahul', runs:4583, strike_rate:136.0, avg:38.2, fours:421, sixes:218, innings:120 },
+  { batter:'MS Dhoni', runs:5243, strike_rate:132.8, avg:23.0, fours:318, sixes:341, innings:228 },
+  { batter:'RR Pant', runs:3284, strike_rate:147.7, avg:30.2, fours:276, sixes:192, innings:109 },
+];
+
+export const TOP_BOWLERS = [
+  { bowler:'YS Chahal', wickets:213, economy:7.74, avg:19.4, innings:159 },
+  { bowler:'DJ Bravo', wickets:207, economy:8.08, avg:23.7, innings:158 },
+  { bowler:'PP Chawla', wickets:201, economy:7.98, avg:26.7, innings:191 },
+  { bowler:'SP Narine', wickets:200, economy:6.76, avg:21.3, innings:175 },
+  { bowler:'R Ashwin', wickets:198, economy:6.97, avg:24.0, innings:208 },
+  { bowler:'B Kumar', wickets:195, economy:7.46, avg:22.0, innings:176 },
+  { bowler:'SL Malinga', wickets:188, economy:7.03, avg:17.9, innings:122 },
+  { bowler:'A Mishra', wickets:183, economy:7.30, avg:24.8, innings:162 },
+  { bowler:'JJ Bumrah', wickets:182, economy:7.23, avg:22.2, innings:133 },
+  { bowler:'RA Jadeja', wickets:169, economy:7.57, avg:28.8, innings:211 },
+  { bowler:'HH Pandya', wickets:133, economy:8.50, avg:27.1, innings:132 },
+  { bowler:'SK Warne', wickets:125, economy:7.00, avg:23.2, innings:84 },
+  { bowler:'P Kumar', wickets:132, economy:7.89, avg:26.4, innings:116 },
+  { bowler:'Z Khan', wickets:100, economy:7.61, avg:26.2, innings:100 },
+  { bowler:'Mohammed Shami', wickets:107, economy:8.12, avg:23.5, innings:97 },
+];
+
+export const FEATURE_IMPORTANCE = {
+  'Team 2 Avg Score': 20.4,
+  'Team 1 Avg Score': 18.7,
+  'H2H Win Rate': 11.5,
+  'Venue Win Rate': 11.2,
+  'Season Context': 9.9,
+  'City Factor': 9.8,
+  'Team 1 Recent Form': 7.8,
+  'Team 2 Recent Form': 6.3,
+  'Toss Decision': 2.3,
+  'Toss Advantage': 2.2,
+};
+
+export const RECENT_RESULTS = [
+  { team1:'Kolkata Knight Riders', team2:'Sunrisers Hyderabad', winner:'Kolkata Knight Riders', venue:'Eden Gardens', date:'2024-05-23', margin:'8 wickets' },
+  { team1:'Rajasthan Royals', team2:'Sunrisers Hyderabad', winner:'Sunrisers Hyderabad', venue:'Rajiv Gandhi International Cricket Stadium', date:'2024-05-21', margin:'36 runs' },
+  { team1:'Royal Challengers Bengaluru', team2:'Rajasthan Royals', winner:'Rajasthan Royals', venue:'M Chinnaswamy Stadium', date:'2024-05-18', margin:'4 wickets' },
+  { team1:'Mumbai Indians', team2:'Kolkata Knight Riders', winner:'Kolkata Knight Riders', venue:'Wankhede Stadium', date:'2024-05-15', margin:'18 runs' },
+  { team1:'Sunrisers Hyderabad', team2:'Punjab Kings', winner:'Sunrisers Hyderabad', venue:'Rajiv Gandhi International Cricket Stadium', date:'2024-05-12', margin:'4 wickets' },
+  { team1:'Gujarat Titans', team2:'Chennai Super Kings', winner:'Chennai Super Kings', venue:'Narendra Modi Stadium', date:'2024-05-09', margin:'63 runs' },
+  { team1:'Rajasthan Royals', team2:'Delhi Capitals', winner:'Rajasthan Royals', venue:'Sawai Mansingh Stadium', date:'2024-05-06', margin:'12 runs' },
+  { team1:'Kolkata Knight Riders', team2:'Gujarat Titans', winner:'Kolkata Knight Riders', venue:'Eden Gardens', date:'2024-05-03', margin:'98 runs' },
+];

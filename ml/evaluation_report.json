@@ -1,0 +1,102 @@
+{
+  "model": "VotingClassifier",
+  "n_samples": 1090,
+  "n_features": 10,
+  "feature_names": [
+    "toss_won_by_team1",
+    "toss_bat_decision",
+    "h2h_team1_win_rate",
+    "team1_form",
+    "team2_form",
+    "venue_team1_win_rate",
+    "team1_venue_avg_score",
+    "team2_venue_avg_score",
+    "season_num",
+    "city_enc"
+  ],
+  "cv_accuracy_mean": 0.5587,
+  "cv_accuracy_std": 0.014,
+  "cv_folds": [
+    0.555,
+    0.5505,
+    0.5826,
+    0.5413,
+    0.5642
+  ],
+  "holdout_accuracy": 0.7339,
+  "holdout_auc": 0.8574,
+  "brier_score": 0.1837,
+  "log_loss": 0.5515,
+  "confusion_matrix": [
+    [
+      93,
+      13
+    ],
+    [
+      45,
+      67
+    ]
+  ],
+  "team_accuracy": {
+    "Chennai Super Kings": 0.815,
+    "Delhi Capitals": 0.706,
+    "Gujarat Titans": 0.81,
+    "Kolkata Knight Riders": 0.667,
+    "Lucknow Super Giants": 0.591,
+    "Mumbai Indians": 0.875,
+    "Punjab Kings": 0.727,
+    "Rajasthan Royals": 0.68,
+    "Royal Challengers Bangalore": 0.556,
+    "Royal Challengers Bengaluru": 0.889,
+    "Sunrisers Hyderabad": 0.85
+  },
+  "calibration": [
+    {
+      "mean_pred": 0.206,
+      "frac_pos": 0.053
+    },
+    {
+      "mean_pred": 0.326,
+      "frac_pos": 0.176
+    },
+    {
+      "mean_pred": 0.437,
+      "frac_pos": 0.515
+    },
+    {
+      "mean_pred": 0.558,
+      "frac_pos": 0.761
+    },
+    {
+      "mean_pred": 0.687,
+      "frac_pos": 0.952
+    },
+    {
+      "mean_pred": 0.797,
+      "frac_pos": 0.909
+    },
+    {
+      "mean_pred": 0.886,
+      "frac_pos": 1.0
+    }
+  ],
+  "season_accuracy": {
+    "2007/08": 0.741,
+    "2009": 0.825,
+    "2009/10": 0.833,
+    "2011": 0.875,
+    "2012": 0.784,
+    "2013": 0.789,
+    "2014": 0.817,
+    "2015": 0.789,
+    "2016": 0.767,
+    "2017": 0.814,
+    "2018": 0.733,
+    "2019": 0.814,
+    "2020/21": 0.617,
+    "2021": 0.767,
+    "2022": 0.635,
+    "2023": 0.781,
+    "2024": 0.789
+  }
+}

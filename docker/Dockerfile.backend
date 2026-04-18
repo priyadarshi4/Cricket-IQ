@@ -1,0 +1,26 @@
+# ── Build stage ───────────────────────────────────────────────────────────
+FROM node:20-alpine AS deps
+WORKDIR /app
+COPY package*.json ./
+RUN npm ci --only=production
+
+# ── Runtime stage ──────────────────────────────────────────────────────────
+FROM node:20-alpine
+WORKDIR /app
+
+# Security: non-root user
+RUN addgroup -S cricketiq && adduser -S cricketiq -G cricketiq
+
+COPY --from=deps /app/node_modules ./node_modules
+COPY . .
+
+# Ensure data dir exists
+RUN mkdir -p /app/data
+
+USER cricketiq
+EXPOSE 5000
+
+HEALTHCHECK --interval=15s --timeout=5s --retries=3 \
+  CMD wget -qO- http://localhost:5000/api/health || exit 1
+
+CMD ["node", "server.js"]

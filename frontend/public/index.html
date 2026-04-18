@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#080b14" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="CricketIQ" />
+  <meta name="description" content="CricketIQ — AI-powered IPL match prediction. Ensemble ML on 1,095 real matches." />
+  <meta property="og:title" content="CricketIQ — AI IPL Match Predictor" />
+  <meta property="og:type" content="website" />
+  <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
+  <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
+  <title>CricketIQ — AI Match Predictor</title>
+  <style>html,body,#root{background:#080b14;min-height:100vh;margin:0}</style>
+</head>
+<body>
+  <noscript>CricketIQ requires JavaScript to run.</noscript>
+  <div id="root"></div>
+  <script>
+    if('serviceWorker' in navigator){
+      window.addEventListener('load',()=>navigator.serviceWorker.register('/service-worker.js'));
+    }
+  </script>
+</body>
+</html>

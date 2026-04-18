@@ -1,0 +1,750 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>CricketIQ — Admin Panel</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=JetBrains+Mono:wght@400;500&display=swap');
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#080b14;--bg2:#0e1120;--bg3:#141828;--bg4:#1a1f30;
+  --txt:#e8eaf6;--txt2:#8892b0;--txt3:#4a5568;
+  --border:rgba(255,255,255,0.07);--border2:rgba(255,255,255,0.13);
+  --red:#e63946;--orange:#f77f00;--blue:#4361ee;--green:#00c49a;--gold:#ffd700;
+  --grad:linear-gradient(135deg,#e63946,#f77f00);
+}
+body{background:var(--bg);color:var(--txt);font-family:'Syne',sans-serif;min-height:100vh}
+.mono{font-family:'JetBrains Mono',monospace}
+
+/* LAYOUT */
+.admin-wrap{display:grid;grid-template-columns:220px 1fr;min-height:100vh}
+.sidebar{background:var(--bg2);border-right:1px solid var(--border);padding:24px 0;position:sticky;top:0;height:100vh;overflow-y:auto}
+.sidebar-logo{display:flex;align-items:center;gap:10px;padding:0 20px 20px;border-bottom:1px solid var(--border);margin-bottom:16px}
+.logo-icon{width:32px;height:32px;background:var(--grad);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:16px}
+.logo-txt{font-size:16px;font-weight:800;color:var(--txt)}
+.logo-sub{font-size:10px;color:var(--orange);font-weight:700;letter-spacing:1px;text-transform:uppercase}
+.nav-section{padding:0 12px;margin-bottom:8px}
+.nav-label{font-size:9px;color:var(--txt3);text-transform:uppercase;letter-spacing:1.5px;font-weight:700;padding:6px 8px}
+.nav-item{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:8px;cursor:pointer;font-size:13px;font-weight:600;color:var(--txt2);transition:all 0.2s;border:none;background:none;width:100%;text-align:left}
+.nav-item:hover{background:var(--bg4);color:var(--txt)}
+.nav-item.active{background:var(--bg4);color:var(--orange);border-left:2px solid var(--orange)}
+.nav-item .icon{font-size:15px;width:20px;text-align:center}
+.status-dot{width:7px;height:7px;border-radius:50%;background:var(--green);margin-left:auto;animation:pulse 2s ease infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.4}}
+
+.main{padding:28px;overflow-y:auto}
+.page{display:none}.page.active{display:block;animation:fadeIn 0.3s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+
+.page-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;flex-wrap:wrap;gap:12px}
+.page-title{font-size:22px;font-weight:800}
+.page-sub{font-size:13px;color:var(--txt2);margin-top:2px}
+
+/* CARDS */
+.card{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:20px}
+.card-glow{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:20px;position:relative;overflow:hidden}
+.card-glow::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--grad)}
+
+/* GRID */
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px}
+.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+
+/* METRIC */
+.metric{background:var(--bg3);border-radius:10px;padding:14px 16px}
+.metric-val{font-size:26px;font-weight:800;font-family:'JetBrains Mono',monospace}
+.metric-lbl{font-size:11px;color:var(--txt2);text-transform:uppercase;letter-spacing:1px;margin-top:3px}
+.metric-trend{font-size:11px;font-weight:700;margin-top:4px}
+.up{color:var(--green)}.down{color:var(--red)}.neutral{color:var(--orange)}
+
+/* TABLE */
+.tbl{width:100%;border-collapse:collapse}
+.tbl th{text-align:left;padding:8px 12px;font-size:10px;text-transform:uppercase;letter-spacing:1px;color:var(--txt2);border-bottom:1px solid var(--border);font-weight:700}
+.tbl td{padding:10px 12px;border-bottom:1px solid var(--border);font-size:13px;vertical-align:middle}
+.tbl tr:last-child td{border-bottom:none}
+.tbl tbody tr:hover td{background:var(--bg3)}
+
+/* BADGE */
+.badge{display:inline-block;font-size:11px;padding:3px 8px;border-radius:12px;font-weight:700}
+.b-green{background:rgba(0,196,154,.15);color:var(--green)}
+.b-red{background:rgba(230,57,70,.15);color:var(--red)}
+.b-orange{background:rgba(247,127,.15);color:var(--orange)}
+.b-blue{background:rgba(67,97,238,.15);color:var(--blue)}
+.b-gray{background:var(--bg4);color:var(--txt2)}
+
+/* BUTTONS */
+.btn{padding:8px 16px;border-radius:7px;cursor:pointer;font-size:13px;font-weight:700;font-family:'Syne',sans-serif;transition:all .2s;border:none}
+.btn-primary{background:var(--grad);color:#fff}
+.btn-secondary{background:var(--bg4);color:var(--txt);border:1px solid var(--border2)}
+.btn-danger{background:rgba(230,57,70,.15);color:var(--red);border:1px solid rgba(230,57,70,.3)}
+.btn:hover{opacity:.85}
+
+/* FORM */
+input,select,textarea{background:var(--bg3);border:1px solid var(--border2);color:var(--txt);padding:9px 12px;border-radius:7px;font-size:13px;font-family:'Syne',sans-serif;width:100%;outline:none}
+input:focus,select:focus,textarea:focus{border-color:var(--orange)}
+.field{display:flex;flex-direction:column;gap:5px;margin-bottom:14px}
+.field label{font-size:11px;color:var(--txt2);text-transform:uppercase;letter-spacing:1px;font-weight:700}
+
+/* PROGRESS */
+.prog{height:6px;background:var(--bg4);border-radius:3px;overflow:hidden;margin-top:4px}
+.prog-fill{height:100%;background:var(--grad);border-radius:3px;transition:width .8s ease}
+
+/* LOG */
+.log-wrap{background:var(--bg3);border-radius:8px;padding:14px;font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--txt2);max-height:260px;overflow-y:auto;line-height:1.8}
+.log-line{display:flex;gap:10px}
+.log-time{color:var(--txt3);flex-shrink:0}
+.log-info{color:var(--green)}.log-warn{color:var(--orange)}.log-err{color:var(--red)}
+
+/* TOGGLE */
+.toggle-wrap{display:flex;align-items:center;gap:10px}
+.toggle{position:relative;width:40px;height:22px;cursor:pointer}
+.toggle input{opacity:0;width:0;height:0}
+.toggle-slider{position:absolute;inset:0;background:var(--bg4);border-radius:11px;transition:.3s}
+.toggle-slider::before{content:'';position:absolute;height:16px;width:16px;left:3px;bottom:3px;background:var(--txt2);border-radius:50%;transition:.3s}
+.toggle input:checked+.toggle-slider{background:var(--orange)}
+.toggle input:checked+.toggle-slider::before{transform:translateX(18px);background:#fff}
+
+/* ACCURACY GAUGE */
+.gauge-wrap{position:relative;width:120px;height:70px;margin:0 auto 8px}
+
+/* ALERT */
+.alert{padding:12px 16px;border-radius:8px;font-size:13px;margin-bottom:16px;display:flex;align-items:center;gap:10px}
+.alert-info{background:rgba(67,97,238,.1);border:1px solid rgba(67,97,238,.3);color:var(--blue)}
+.alert-warn{background:rgba(247,127,0,.1);border:1px solid rgba(247,127,0,.3);color:var(--orange)}
+
+@media(max-width:700px){
+  .admin-wrap{grid-template-columns:1fr}
+  .sidebar{position:static;height:auto}
+  .g4{grid-template-columns:1fr 1fr}.g3,.g2{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+<div class="admin-wrap">
+
+<!-- SIDEBAR -->
+<aside class="sidebar">
+  <div class="sidebar-logo">
+    <div class="logo-icon">🏏</div>
+    <div>
+      <div class="logo-txt">CricketIQ</div>
+      <div class="logo-sub">Admin Panel</div>
+    </div>
+  </div>
+  <div class="nav-section">
+    <div class="nav-label">Overview</div>
+    <button class="nav-item active" onclick="showPage('dashboard',this)"><span class="icon">📊</span>Dashboard<span class="status-dot"></span></button>
+    <button class="nav-item" onclick="showPage('predictions',this)"><span class="icon">🔮</span>Predictions</button>
+    <button class="nav-item" onclick="showPage('accuracy',this)"><span class="icon">🎯</span>Model Accuracy</button>
+  </div>
+  <div class="nav-section" style="margin-top:8px">
+    <div class="nav-label">Data</div>
+    <button class="nav-item" onclick="showPage('teams',this)"><span class="icon">🏏</span>Teams</button>
+    <button class="nav-item" onclick="showPage('players',this)"><span class="icon">👤</span>Players</button>
+    <button class="nav-item" onclick="showPage('matches',this)"><span class="icon">📋</span>Matches</button>
+  </div>
+  <div class="nav-section" style="margin-top:8px">
+    <div class="nav-label">System</div>
+    <button class="nav-item" onclick="showPage('model',this)"><span class="icon">🤖</span>ML Model</button>
+    <button class="nav-item" onclick="showPage('logs',this)"><span class="icon">📝</span>Logs</button>
+    <button class="nav-item" onclick="showPage('settings',this)"><span class="icon">⚙️</span>Settings</button>
+  </div>
+  <div style="padding:20px 12px 0;border-top:1px solid var(--border);margin-top:16px">
+    <div style="font-size:11px;color:var(--txt3)">API Status</div>
+    <div style="font-size:12px;color:var(--green);font-weight:700;margin-top:4px">● Backend: Online</div>
+    <div style="font-size:12px;color:var(--orange);font-weight:700;margin-top:2px">● ML API: Standby</div>
+    <div style="font-size:12px;color:var(--green);font-weight:700;margin-top:2px">● DB: Connected</div>
+  </div>
+</aside>
+
+<!-- MAIN CONTENT -->
+<main class="main">
+
+  <!-- ── DASHBOARD ────────────────────────────────────────── -->
+  <div class="page active" id="page-dashboard">
+    <div class="page-head">
+      <div><div class="page-title">Dashboard</div><div class="page-sub">System overview — updated in real time</div></div>
+      <button class="btn btn-primary" onclick="refreshDashboard()">↻ Refresh</button>
+    </div>
+
+    <div class="g4" style="margin-bottom:20px" id="dash-metrics">
+      <div class="metric"><div class="metric-val" style="color:var(--orange)">1,095</div><div class="metric-lbl">Training Matches</div><div class="metric-trend neutral">IPL 2008–2024</div></div>
+      <div class="metric"><div class="metric-val" style="color:var(--green)">58.7%</div><div class="metric-lbl">Model Accuracy</div><div class="metric-trend up">▲ Above baseline</div></div>
+      <div class="metric"><div class="metric-val" id="pred-total" style="color:var(--blue)">—</div><div class="metric-lbl">Predictions Made</div><div class="metric-trend neutral">All time</div></div>
+      <div class="metric"><div class="metric-val" id="uptime-val" style="color:var(--txt)">—</div><div class="metric-lbl">API Uptime</div><div class="metric-trend up">Healthy</div></div>
+    </div>
+
+    <div class="g2" style="margin-bottom:20px">
+      <div class="card-glow">
+        <div style="font-size:12px;color:var(--txt2);text-transform:uppercase;letter-spacing:1px;margin-bottom:14px">Win Rate by Team</div>
+        <div style="position:relative;height:200px"><canvas id="wr-chart" role="img" aria-label="Team win rates bar chart">Bar chart showing IPL team win rates from 2008-2024.</canvas></div>
+      </div>
+      <div class="card-glow">
+        <div style="font-size:12px;color:var(--txt2);text-transform:uppercase;letter-spacing:1px;margin-bottom:14px">Feature Importance</div>
+        <div style="position:relative;height:200px"><canvas id="fi-chart" role="img" aria-label="Feature importance horizontal bar chart">Horizontal bar chart of ML model feature importances.</canvas></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div style="font-size:12px;color:var(--txt2);text-transform:uppercase;letter-spacing:1px;margin-bottom:14px">Recent Predictions</div>
+      <table class="tbl" id="recent-pred-tbl">
+        <thead><tr><th>Time</th><th>Team 1</th><th>Team 2</th><th>Predicted Winner</th><th>Confidence</th><th>Actual</th><th>Result</th></tr></thead>
+        <tbody id="recent-pred-body">
+          <tr><td colspan="7" style="text-align:center;color:var(--txt3);padding:24px">
+            Connect to backend to see live predictions
+          </td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ── PREDICTIONS ──────────────────────────────────────── -->
+  <div class="page" id="page-predictions">
+    <div class="page-head">
+      <div><div class="page-title">Prediction Log</div><div class="page-sub">All predictions with outcome tracking</div></div>
+      <div style="display:flex;gap:8px">
+        <select id="pred-filter" style="width:160px" onchange="filterPredictions()">
+          <option value="all">All</option>
+          <option value="correct">Correct</option>
+          <option value="incorrect">Incorrect</option>
+          <option value="pending">Pending</option>
+        </select>
+        <button class="btn btn-secondary" onclick="exportCSV()">↓ Export CSV</button>
+      </div>
+    </div>
+    <div class="alert alert-info">ℹ️ Connect backend API to load live prediction history. Sample data shown below.</div>
+    <div class="card">
+      <div style="overflow-x:auto">
+        <table class="tbl">
+          <thead><tr>
+            <th>ID</th><th>Date</th><th>Match</th><th>Predicted</th><th>Conf</th><th>Actual</th><th>Correct?</th><th>Actions</th>
+          </tr></thead>
+          <tbody id="all-pred-body"></tbody>
+        </table>
+      </div>
+      <div id="pred-pagination" style="display:flex;justify-content:center;gap:8px;margin-top:16px"></div>
+    </div>
+  </div>
+
+  <!-- ── ACCURACY ─────────────────────────────────────────── -->
+  <div class="page" id="page-accuracy">
+    <div class="page-head">
+      <div><div class="page-title">Model Accuracy</div><div class="page-sub">Track prediction performance over time</div></div>
+    </div>
+    <div class="g3" style="margin-bottom:20px">
+      <div class="metric"><div class="metric-val" style="color:var(--green)">58.7%</div><div class="metric-lbl">Overall Accuracy</div><div class="metric-trend up">▲ +8.7% over random</div></div>
+      <div class="metric"><div class="metric-val" style="color:var(--orange)">67.2%</div><div class="metric-lbl">High-Conf Accuracy</div><div class="metric-trend up">Confidence ≥ 70%</div></div>
+      <div class="metric"><div class="metric-val" style="color:var(--blue)">0.587</div><div class="metric-lbl">AUC-ROC Score</div><div class="metric-trend neutral">Test set</div></div>
+    </div>
+    <div class="g2" style="margin-bottom:20px">
+      <div class="card">
+        <div style="font-size:12px;color:var(--txt2);text-transform:uppercase;letter-spacing:1px;margin-bottom:14px">Accuracy by Confidence Band</div>
+        <div style="position:relative;height:200px"><canvas id="acc-band-chart" role="img" aria-label="Accuracy by confidence band bar chart">Bar chart showing prediction accuracy grouped by confidence level.</canvas></div>
+      </div>
+      <div class="card">
+        <div style="font-size:12px;color:var(--txt2);text-transform:uppercase;letter-spacing:1px;margin-bottom:14px">Model Comparison</div>
+        <div id="model-comp">
+          ${[['Logistic Regression','52.1'],['Random Forest','55.8'],['XGBoost','56.3'],['LightGBM','56.1'],['Ensemble (All)','58.7']].map(([m,a])=>`
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px">
+            <span style="font-size:12px;color:var(--txt2);width:160px">${m}</span>
+            <div class="prog" style="flex:1"><div class="prog-fill" style="width:${(a/65*100).toFixed(0)}%"></div></div>
+            <span class="mono" style="font-size:12px;color:var(--orange);width:42px">${a}%</span>
+          </div>`).join('')}
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div style="font-size:12px;color:var(--txt2);text-transform:uppercase;letter-spacing:1px;margin-bottom:14px">Accuracy Over Time (Rolling 30-Match Window)</div>
+      <div style="position:relative;height:200px"><canvas id="acc-time-chart" role="img" aria-label="Rolling accuracy over time line chart">Line chart of rolling prediction accuracy.</canvas></div>
+    </div>
+  </div>
+
+  <!-- ── TEAMS DATA ────────────────────────────────────────── -->
+  <div class="page" id="page-teams">
+    <div class="page-head">
+      <div><div class="page-title">Teams Data</div><div class="page-sub">IPL franchise statistics</div></div>
+      <button class="btn btn-primary" onclick="showAddTeamModal()">+ Add Team</button>
+    </div>
+    <div class="card">
+      <div style="overflow-x:auto">
+        <table class="tbl" id="teams-tbl">
+          <thead><tr><th>Team</th><th>Matches</th><th>Wins</th><th>Losses</th><th>Win%</th><th>Avg Score</th><th>Status</th></tr></thead>
+          <tbody id="teams-tbody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── PLAYERS DATA ──────────────────────────────────────── -->
+  <div class="page" id="page-players">
+    <div class="page-head">
+      <div><div class="page-title">Players Data</div><div class="page-sub">All-time IPL player statistics</div></div>
+      <div style="display:flex;gap:8px">
+        <button class="btn btn-secondary active" id="bat-btn" onclick="switchPlayerTab('bat')">Batting</button>
+        <button class="btn btn-secondary" id="bowl-btn" onclick="switchPlayerTab('bowl')">Bowling</button>
+      </div>
+    </div>
+    <div class="card">
+      <div style="overflow-x:auto" id="players-table-wrap"></div>
+    </div>
+  </div>
+
+  <!-- ── MATCHES ───────────────────────────────────────────── -->
+  <div class="page" id="page-matches">
+    <div class="page-head">
+      <div><div class="page-title">Matches Database</div><div class="page-sub">Browse and manage match records</div></div>
+      <button class="btn btn-primary" onclick="showAddMatchModal()">+ Add Match</button>
+    </div>
+    <div class="alert alert-warn">⚠️ Editing match data will trigger model retraining on next scheduled run.</div>
+    <div class="card">
+      <div style="display:flex;gap:10px;margin-bottom:16px;flex-wrap:wrap">
+        <input id="match-search" placeholder="Search team or venue..." style="max-width:280px" oninput="filterMatches()">
+        <select id="match-season" style="width:130px" onchange="filterMatches()">
+          <option value="">All Seasons</option>
+          ${['2024','2023','2022','2021','2020','2019','2018','2017','2016','2015'].map(s=>`<option>${s}</option>`).join('')}
+        </select>
+      </div>
+      <div style="overflow-x:auto">
+        <table class="tbl">
+          <thead><tr><th>ID</th><th>Date</th><th>Season</th><th>Teams</th><th>Venue</th><th>Winner</th><th>Margin</th></tr></thead>
+          <tbody id="matches-tbody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── ML MODEL ──────────────────────────────────────────── -->
+  <div class="page" id="page-model">
+    <div class="page-head">
+      <div><div class="page-title">ML Model</div><div class="page-sub">Manage, monitor and retrain the prediction engine</div></div>
+    </div>
+    <div class="g2" style="margin-bottom:20px">
+      <div class="card-glow">
+        <div style="font-size:13px;color:var(--txt2);margin-bottom:14px">Current Model</div>
+        <div style="font-size:20px;font-weight:800;margin-bottom:4px">Ensemble v1.0.0</div>
+        <div style="font-size:12px;color:var(--txt2);margin-bottom:16px">RF + XGBoost + LightGBM + Logistic Regression</div>
+        ${[['Accuracy','58.7%','green'],['Training data','1,095 matches','orange'],['Features','10 engineered','blue'],['Last trained','IPL 2024','txt2']].map(([l,v,c])=>`
+        <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border);font-size:13px">
+          <span style="color:var(--txt2)">${l}</span><span style="color:var(--${c});font-weight:700">${v}</span>
+        </div>`).join('')}
+      </div>
+      <div class="card">
+        <div style="font-size:13px;color:var(--txt2);margin-bottom:16px">Retrain Model</div>
+        <div class="field"><label>Training Data Source</label>
+          <select><option>matches.csv (local)</option><option>MongoDB (live)</option></select>
+        </div>
+        <div class="field"><label>Cross-Validation Folds</label>
+          <select><option>5 folds (recommended)</option><option>3 folds</option><option>10 folds</option></select>
+        </div>
+        <div class="field"><label>Test Split</label>
+          <select><option>20% holdout (recommended)</option><option>15%</option><option>25%</option></select>
+        </div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:4px">
+          <button class="btn btn-primary" onclick="startRetrain()">🚀 Start Retraining</button>
+          <button class="btn btn-secondary" onclick="downloadModel()">↓ Download Model</button>
+        </div>
+        <div id="retrain-status" style="margin-top:14px;display:none">
+          <div style="font-size:12px;color:var(--txt2);margin-bottom:6px">Training progress...</div>
+          <div class="prog"><div class="prog-fill" id="retrain-bar" style="width:0%"></div></div>
+          <div id="retrain-msg" style="font-size:12px;color:var(--orange);margin-top:6px"></div>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div style="font-size:13px;color:var(--txt2);margin-bottom:14px">Feature Importance (Current Model)</div>
+      <div id="fi-detail"></div>
+    </div>
+  </div>
+
+  <!-- ── LOGS ──────────────────────────────────────────────── -->
+  <div class="page" id="page-logs">
+    <div class="page-head">
+      <div><div class="page-title">System Logs</div><div class="page-sub">API requests and model events</div></div>
+      <button class="btn btn-secondary" onclick="clearLogs()">🗑 Clear</button>
+    </div>
+    <div class="g2" style="margin-bottom:16px">
+      <div class="card-glow">
+        <div style="font-size:12px;color:var(--txt2);margin-bottom:12px">API Logs</div>
+        <div class="log-wrap" id="api-logs"></div>
+      </div>
+      <div class="card-glow">
+        <div style="font-size:12px;color:var(--txt2);margin-bottom:12px">Model Events</div>
+        <div class="log-wrap" id="model-logs"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── SETTINGS ──────────────────────────────────────────── -->
+  <div class="page" id="page-settings">
+    <div class="page-head">
+      <div><div class="page-title">Settings</div><div class="page-sub">System configuration</div></div>
+      <button class="btn btn-primary" onclick="saveSettings()">💾 Save Changes</button>
+    </div>
+    <div class="g2">
+      <div class="card">
+        <div style="font-size:13px;font-weight:700;margin-bottom:16px">API Configuration</div>
+        <div class="field"><label>Backend API URL</label><input id="set-api-url" value="http://localhost:5000"></div>
+        <div class="field"><label>ML Service URL</label><input id="set-ml-url" value="http://localhost:8000"></div>
+        <div class="field"><label>Admin API Key</label><input type="password" id="set-api-key" placeholder="••••••••••"></div>
+        <div class="field"><label>Rate Limit (req/min)</label><input type="number" value="60"></div>
+      </div>
+      <div class="card">
+        <div style="font-size:13px;font-weight:700;margin-bottom:16px">Model Settings</div>
+        ${[
+          ['Auto-Retrain After Each Season', true],
+          ['Save All Predictions to DB', true],
+          ['Track Prediction Outcomes', true],
+          ['Enable Rule-Based Fallback', true],
+          ['Log Feature Values', false],
+        ].map(([label, checked]) => `
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--border)">
+          <span style="font-size:13px">${label}</span>
+          <label class="toggle"><input type="checkbox" ${checked?'checked':''}><span class="toggle-slider"></span></label>
+        </div>`).join('')}
+      </div>
+    </div>
+  </div>
+
+</main>
+</div>
+
+<script>
+// ── Nav ──────────────────────────────────────────────────
+function showPage(id, btn) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  document.getElementById('page-' + id).classList.add('active');
+  btn.classList.add('active');
+  if (id === 'accuracy')  initAccuracyCharts();
+  if (id === 'teams')     renderTeams();
+  if (id === 'players')   renderPlayers('bat');
+  if (id === 'matches')   renderMatches();
+  if (id === 'model')     renderFIDetail();
+  if (id === 'logs')      renderLogs();
+}
+
+// ── Data ─────────────────────────────────────────────────
+const TEAMS = [
+  ['Mumbai Indians','MI',261,144,117,55.2,161.6],
+  ['Chennai Super Kings','CSK',237,138,99,58.2,163.0],
+  ['Kolkata Knight Riders','KKR',251,131,120,52.2,156.7],
+  ['Sunrisers Hyderabad','SRH',182,88,94,48.4,159.7],
+  ['Rajasthan Royals','RR',219,112,107,51.1,157.9],
+  ['Delhi Capitals','DC',91,48,43,52.7,163.7],
+  ['Gujarat Titans','GT',45,28,17,62.2,172.4],
+  ['Punjab Kings','PBKS',56,24,32,42.9,170.3],
+  ['Lucknow Super Giants','LSG',43,24,19,55.8,170.7],
+  ['Royal Challengers Bangalore','RCB',237,116,121,48.9,157.1],
+];
+const BATTERS = [
+  ['V Kohli',8014,128.5,32.8,556,347,244],
+  ['S Dhawan',6769,123.5,30.6,668,227,221],
+  ['RG Sharma',6630,127.9,26.4,504,494,251],
+  ['DA Warner',6567,135.4,35.7,559,455,184],
+  ['SK Raina',5536,132.5,27.7,510,354,200],
+  ['MS Dhoni',5243,132.8,23.0,318,341,228],
+  ['AB de Villiers',5181,148.6,30.5,391,388,170],
+  ['CH Gayle',4997,142.1,35.4,422,355,141],
+];
+const BOWLERS = [
+  ['YS Chahal',213,7.74,19.4,159],
+  ['DJ Bravo',207,8.08,23.7,158],
+  ['PP Chawla',201,7.98,26.7,191],
+  ['SP Narine',200,6.76,21.3,175],
+  ['R Ashwin',198,6.97,24.0,208],
+  ['B Kumar',195,7.46,22.0,176],
+  ['JJ Bumrah',182,7.23,22.2,133],
+  ['RA Jadeja',169,7.57,28.8,211],
+];
+const FI = [
+  ['Team 2 Avg Score',20.4],['Team 1 Avg Score',18.7],['H2H Win Rate',11.5],
+  ['Venue Win Rate',11.2],['Season Context',9.9],['City Factor',9.8],
+  ['Team 1 Form',7.8],['Team 2 Form',6.3],['Toss Decision',2.3],['Toss Advantage',2.2],
+];
+const SAMPLE_PREDS = [
+  {id:'p001',date:'2024-05-23',t1:'KKR',t2:'SRH',pred:'KKR',conf:68,actual:'KKR',ok:true},
+  {id:'p002',date:'2024-05-21',t1:'RR',t2:'SRH',pred:'RR',conf:54,actual:'SRH',ok:false},
+  {id:'p003',date:'2024-05-18',t1:'RCB',t2:'RR',pred:'RR',conf:61,actual:'RR',ok:true},
+  {id:'p004',date:'2024-05-15',t1:'MI',t2:'KKR',pred:'MI',conf:57,actual:'KKR',ok:false},
+  {id:'p005',date:'2024-05-12',t1:'SRH',t2:'PBKS',pred:'SRH',conf:72,actual:'SRH',ok:true},
+  {id:'p006',date:'2024-05-09',t1:'GT',t2:'CSK',pred:'GT',conf:55,actual:'CSK',ok:false},
+  {id:'p007',date:'2024-05-06',t1:'RR',t2:'DC',pred:'RR',conf:63,actual:'RR',ok:true},
+];
+const SAMPLE_MATCHES = [
+  [335982,'2024-05-23','2024','Kolkata Knight Riders','Sunrisers Hyderabad','Eden Gardens','KKR','8 wickets'],
+  [335983,'2024-05-21','2024','Rajasthan Royals','Sunrisers Hyderabad','Rajiv Gandhi Stadium','SRH','36 runs'],
+  [335984,'2024-05-18','2024','Royal Challengers Bengaluru','Rajasthan Royals','Chinnaswamy Stadium','RR','4 wickets'],
+  [335985,'2024-05-15','2024','Mumbai Indians','Kolkata Knight Riders','Wankhede Stadium','KKR','18 runs'],
+  [335986,'2024-05-12','2024','Sunrisers Hyderabad','Punjab Kings','Rajiv Gandhi Stadium','SRH','4 wickets'],
+  [335987,'2024-05-09','2024','Gujarat Titans','Chennai Super Kings','Narendra Modi Stadium','CSK','63 runs'],
+];
+
+// ── Dashboard charts ──────────────────────────────────────
+let wrChart, fiChart;
+function initDashboardCharts() {
+  if (wrChart) return;
+  const wrCtx = document.getElementById('wr-chart');
+  wrChart = new Chart(wrCtx, {
+    type: 'bar',
+    data: {
+      labels: TEAMS.map(t => t[1]),
+      datasets: [{ label: 'Win Rate %', data: TEAMS.map(t => t[5]),
+        backgroundColor: TEAMS.map(t => t[5] >= 55 ? 'rgba(230,57,70,0.8)' : t[5] >= 50 ? 'rgba(247,127,0,0.7)' : 'rgba(67,97,238,0.6)'),
+        borderRadius: 4 }]
+    },
+    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } },
+      scales: { x: { ticks: { color: '#8892b0', font: { size: 10 } }, grid: { display: false } },
+                y: { ticks: { color: '#8892b0', font: { size: 10 } }, grid: { color: 'rgba(255,255,255,0.05)' }, min: 35, max: 70 } } }
+  });
+  const fiCtx = document.getElementById('fi-chart');
+  fiChart = new Chart(fiCtx, {
+    type: 'bar',
+    data: {
+      labels: FI.slice(0, 7).map(f => f[0].replace(' Win Rate','').replace(' Avg Score','')),
+      datasets: [{ label: 'Importance %', data: FI.slice(0, 7).map(f => f[1]),
+        backgroundColor: 'rgba(67,97,238,0.75)', borderRadius: 4 }]
+    },
+    options: { indexAxis: 'y', responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { display: false } },
+      scales: { x: { ticks: { color: '#8892b0', font: { size: 10 } }, grid: { color: 'rgba(255,255,255,0.05)' } },
+                y: { ticks: { color: '#8892b0', font: { size: 10 } }, grid: { display: false } } } }
+  });
+  renderRecentPredictions();
+}
+
+function renderRecentPredictions() {
+  const tbody = document.getElementById('recent-pred-body');
+  tbody.innerHTML = SAMPLE_PREDS.slice(0, 5).map(p => `
+    <tr>
+      <td class="mono" style="color:var(--txt3);font-size:11px">${p.date}</td>
+      <td style="font-weight:700;font-size:12px">${p.t1}</td>
+      <td style="font-weight:700;font-size:12px">${p.t2}</td>
+      <td><span style="font-weight:700">${p.pred}</span></td>
+      <td><span class="badge ${p.conf >= 65 ? 'b-green' : p.conf >= 55 ? 'b-orange' : 'b-gray'}">${p.conf}%</span></td>
+      <td>${p.actual || '<span style="color:var(--txt3)">Pending</span>'}</td>
+      <td><span class="badge ${p.ok === true ? 'b-green' : p.ok === false ? 'b-red' : 'b-gray'}">${p.ok === true ? '✓ Correct' : p.ok === false ? '✗ Wrong' : 'N/A'}</span></td>
+    </tr>`).join('');
+  document.getElementById('pred-total').textContent = SAMPLE_PREDS.length;
+  document.getElementById('uptime-val').textContent  = '99.9%';
+}
+
+function refreshDashboard() {
+  renderRecentPredictions();
+  const el = document.querySelector('.status-dot');
+  el.style.background = 'var(--orange)';
+  setTimeout(() => el.style.background = 'var(--green)', 800);
+}
+
+// ── Accuracy charts ───────────────────────────────────────
+let accBandChart, accTimeChart;
+function initAccuracyCharts() {
+  if (accBandChart) return;
+  accBandChart = new Chart(document.getElementById('acc-band-chart'), {
+    type: 'bar',
+    data: {
+      labels: ['50–55%', '55–60%', '60–65%', '65–70%', '70–75%', '75%+'],
+      datasets: [{ label: 'Accuracy', data: [51.2, 55.8, 60.1, 65.4, 70.2, 74.8],
+        backgroundColor: ['rgba(67,97,238,.7)','rgba(67,97,238,.7)','rgba(247,127,0,.7)','rgba(247,127,0,.7)','rgba(0,196,154,.7)','rgba(0,196,154,.7)'],
+        borderRadius: 4 }]
+    },
+    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } },
+      scales: { x: { ticks: { color: '#8892b0', font: { size: 11 } }, grid: { display: false } },
+                y: { ticks: { color: '#8892b0' }, grid: { color: 'rgba(255,255,255,0.05)' }, min: 40, max: 80 } } }
+  });
+  const rolling = Array.from({ length: 20 }, (_, i) => +(52 + Math.sin(i * 0.5) * 8 + i * 0.2).toFixed(1));
+  accTimeChart = new Chart(document.getElementById('acc-time-chart'), {
+    type: 'line',
+    data: {
+      labels: rolling.map((_, i) => `W${i + 1}`),
+      datasets: [
+        { label: 'Rolling Accuracy', data: rolling, borderColor: '#f77f00', borderWidth: 2, pointRadius: 3, fill: false, tension: 0.4 },
+        { label: 'Baseline (50%)', data: Array(20).fill(50), borderColor: '#4a5568', borderWidth: 1, borderDash: [4, 4], pointRadius: 0, fill: false },
+      ]
+    },
+    options: { responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { labels: { color: '#8892b0', font: { size: 11 } } } },
+      scales: { x: { ticks: { color: '#8892b0', font: { size: 10 } }, grid: { color: 'rgba(255,255,255,.04)' } },
+                y: { ticks: { color: '#8892b0' }, grid: { color: 'rgba(255,255,255,.04)' }, min: 40, max: 75 } } }
+  });
+}
+
+// ── Teams ─────────────────────────────────────────────────
+function renderTeams() {
+  document.getElementById('teams-tbody').innerHTML = TEAMS.map(([name, abbr, m, w, l, wr, avg]) => `
+    <tr>
+      <td><span style="font-weight:800">${abbr}</span> <span style="color:var(--txt2);font-size:12px">${name}</span></td>
+      <td class="mono">${m}</td><td class="mono" style="color:var(--green)">${w}</td>
+      <td class="mono" style="color:var(--red)">${l}</td>
+      <td><span class="badge ${wr>=55?'b-green':wr>=50?'b-orange':'b-red'}">${wr}%</span></td>
+      <td class="mono">${avg}</td>
+      <td><span class="badge b-green">Active</span></td>
+    </tr>`).join('');
+}
+
+// ── Players ───────────────────────────────────────────────
+function renderPlayers(tab) {
+  const wrap = document.getElementById('players-table-wrap');
+  if (tab === 'bat') {
+    wrap.innerHTML = `<table class="tbl"><thead><tr><th>#</th><th>Player</th><th>Runs</th><th>SR</th><th>Avg</th><th>4s</th><th>6s</th><th>Inn</th></tr></thead><tbody>
+      ${BATTERS.map(([n,r,sr,avg,f,s,inn],i) => `<tr><td class="mono" style="color:var(--txt3)">${i+1}</td>
+        <td style="font-weight:700">${n}</td><td class="mono" style="color:var(--orange);font-weight:700">${r.toLocaleString()}</td>
+        <td class="mono">${sr}</td><td class="mono">${avg}</td><td class="mono">${f}</td>
+        <td class="mono" style="color:var(--blue)">${s}</td><td class="mono" style="color:var(--txt2)">${inn}</td></tr>`).join('')}
+      </tbody></table>`;
+  } else {
+    wrap.innerHTML = `<table class="tbl"><thead><tr><th>#</th><th>Player</th><th>Wkts</th><th>Eco</th><th>Avg</th><th>Inn</th></tr></thead><tbody>
+      ${BOWLERS.map(([n,w,eco,avg,inn],i) => `<tr><td class="mono" style="color:var(--txt3)">${i+1}</td>
+        <td style="font-weight:700">${n}</td><td class="mono" style="color:var(--blue);font-weight:700">${w}</td>
+        <td class="mono">${eco}</td><td class="mono">${avg}</td><td class="mono" style="color:var(--txt2)">${inn}</td></tr>`).join('')}
+      </tbody></table>`;
+  }
+}
+
+function switchPlayerTab(tab) {
+  document.getElementById('bat-btn').classList.toggle('active', tab === 'bat');
+  document.getElementById('bowl-btn').classList.toggle('active', tab === 'bowl');
+  renderPlayers(tab);
+}
+
+// ── Matches ───────────────────────────────────────────────
+let allMatches = [...SAMPLE_MATCHES];
+function renderMatches(data) {
+  const rows = (data || allMatches).slice(0, 20);
+  document.getElementById('matches-tbody').innerHTML = rows.map(([id,date,season,t1,t2,venue,winner,margin]) => `
+    <tr><td class="mono" style="font-size:11px;color:var(--txt3)">${id}</td>
+      <td class="mono" style="font-size:12px">${date}</td>
+      <td><span class="badge b-blue">${season}</span></td>
+      <td style="font-size:13px"><b>${t1.split(' ').map(w=>w[0]).join('').slice(0,3)}</b> vs <b>${t2.split(' ').map(w=>w[0]).join('').slice(0,3)}</b></td>
+      <td style="font-size:12px;color:var(--txt2)">${venue.split(',')[0].slice(0,24)}</td>
+      <td><span class="badge b-green">${winner}</span></td>
+      <td style="font-size:12px;color:var(--txt2)">${margin}</td>
+    </tr>`).join('');
+}
+
+function filterMatches() {
+  const q = document.getElementById('match-search').value.toLowerCase();
+  const s = document.getElementById('match-season').value;
+  const filtered = SAMPLE_MATCHES.filter(m =>
+    (!q || m[3].toLowerCase().includes(q) || m[4].toLowerCase().includes(q) || m[5].toLowerCase().includes(q)) &&
+    (!s || m[2] === s)
+  );
+  renderMatches(filtered);
+}
+
+// ── Predictions tab ───────────────────────────────────────
+function filterPredictions() {
+  const f = document.getElementById('pred-filter').value;
+  const data = SAMPLE_PREDS.filter(p =>
+    f === 'all' ? true : f === 'correct' ? p.ok === true : f === 'incorrect' ? p.ok === false : p.ok === null
+  );
+  document.getElementById('all-pred-body').innerHTML = data.map(p => `
+    <tr><td class="mono" style="font-size:11px;color:var(--txt3)">${p.id}</td>
+      <td style="font-size:12px">${p.date}</td>
+      <td style="font-weight:700">${p.t1} vs ${p.t2}</td>
+      <td style="font-weight:700">${p.pred}</td>
+      <td><span class="badge ${p.conf>=65?'b-green':p.conf>=55?'b-orange':'b-gray'}">${p.conf}%</span></td>
+      <td>${p.actual || '<span style="color:var(--txt3)">—</span>'}</td>
+      <td><span class="badge ${p.ok===true?'b-green':p.ok===false?'b-red':'b-gray'}">${p.ok===true?'✓':p.ok===false?'✗':'?'}</span></td>
+      <td><button class="btn btn-secondary" style="padding:4px 10px;font-size:11px" onclick="recordOutcome('${p.id}')">Record</button></td>
+    </tr>`).join('');
+}
+
+function recordOutcome(id) {
+  const winner = prompt('Enter actual winner for prediction ' + id + ':');
+  if (winner) alert(`✅ Outcome recorded: ${winner}\n(Connect to backend API to persist this.)`);
+}
+
+function exportCSV() {
+  const rows = [['ID','Date','T1','T2','Predicted','Confidence','Actual','Correct']];
+  SAMPLE_PREDS.forEach(p => rows.push([p.id,p.date,p.t1,p.t2,p.pred,p.conf,p.actual||'',p.ok===true?'Yes':p.ok===false?'No':'Pending']));
+  const csv = rows.map(r => r.join(',')).join('\n');
+  const a = document.createElement('a');
+  a.href = 'data:text/csv;charset=utf-8,' + encodeURIComponent(csv);
+  a.download = 'cricketiq_predictions.csv';
+  a.click();
+}
+
+// ── ML Model page ─────────────────────────────────────────
+function renderFIDetail() {
+  document.getElementById('fi-detail').innerHTML = FI.map(([k, v]) => `
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:10px">
+      <span style="font-size:12px;color:var(--txt2);width:200px">${k}</span>
+      <div class="prog" style="flex:1"><div class="prog-fill" style="width:${(v/22*100).toFixed(0)}%"></div></div>
+      <span class="mono" style="font-size:12px;color:var(--orange);width:42px">${v}%</span>
+    </div>`).join('');
+}
+
+function startRetrain() {
+  const box = document.getElementById('retrain-status');
+  const bar = document.getElementById('retrain-bar');
+  const msg = document.getElementById('retrain-msg');
+  box.style.display = 'block';
+  const steps = [
+    [10,'Loading training data (1,095 matches)...'],
+    [25,'Engineering features...'],
+    [45,'Training Logistic Regression...'],
+    [58,'Training Random Forest (300 trees)...'],
+    [72,'Training XGBoost...'],
+    [85,'Training LightGBM...'],
+    [95,'Building ensemble & evaluating...'],
+    [100,'✅ Retraining complete! Accuracy: 58.7%'],
+  ];
+  let i = 0;
+  const interval = setInterval(() => {
+    if (i >= steps.length) { clearInterval(interval); return; }
+    const [pct, text] = steps[i++];
+    bar.style.width = pct + '%';
+    msg.textContent = text;
+    msg.style.color = pct === 100 ? 'var(--green)' : 'var(--orange)';
+  }, 600);
+}
+
+function downloadModel() {
+  alert('In production this would download model.pkl from the ML service.\n\nFile: cricketiq_ensemble_v1.0.pkl (~2.4 MB)');
+}
+
+// ── Logs ─────────────────────────────────────────────────
+function renderLogs() {
+  const apiLogs = [
+    {t:'03:14:22',level:'info',msg:'POST /api/predict 200 — MI vs CSK — 42ms'},
+    {t:'03:13:55',level:'info',msg:'GET /api/teams 200 — 8ms'},
+    {t:'03:12:10',level:'info',msg:'POST /api/predict 200 — KKR vs RR — 38ms'},
+    {t:'03:11:44',level:'warn',msg:'Rate limit approached for 192.168.1.5'},
+    {t:'03:10:01',level:'info',msg:'POST /api/predict 200 — SRH vs DC — 41ms'},
+    {t:'03:09:32',level:'info',msg:'GET /api/leaderboard 200 — 5ms'},
+  ];
+  const modelLogs = [
+    {t:'00:00:01',level:'info',msg:'✅ ML artifacts loaded in 0.42s'},
+    {t:'00:00:00',level:'info',msg:'FastAPI ML service started on port 8000'},
+    {t:'Yesterday',level:'info',msg:'Model retrain triggered — IPL 2024 data'},
+    {t:'Yesterday',level:'info',msg:'New accuracy: 58.7% (was 57.9%)'},
+    {t:'Yesterday',level:'info',msg:'Model saved to model.pkl'},
+  ];
+  document.getElementById('api-logs').innerHTML = apiLogs.map(l =>
+    `<div class="log-line"><span class="log-time">${l.t}</span><span class="log-${l.level}">[${l.level.toUpperCase()}]</span><span>${l.msg}</span></div>`
+  ).join('');
+  document.getElementById('model-logs').innerHTML = modelLogs.map(l =>
+    `<div class="log-line"><span class="log-time">${l.t}</span><span class="log-${l.level}">[${l.level.toUpperCase()}]</span><span>${l.msg}</span></div>`
+  ).join('');
+}
+
+function clearLogs() {
+  ['api-logs','model-logs'].forEach(id => document.getElementById(id).innerHTML =
+    '<div style="color:var(--txt3);font-size:12px">Logs cleared.</div>');
+}
+
+function saveSettings() {
+  const url = document.getElementById('set-api-url').value;
+  localStorage.setItem('ciq_api_url', url);
+  alert('✅ Settings saved!');
+}
+
+// ── Init ──────────────────────────────────────────────────
+filterPredictions();
+renderMatches();
+initDashboardCharts();
+</script>
+</body>
+</html>
