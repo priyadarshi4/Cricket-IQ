@@ -20,7 +20,7 @@ const matchSchema = new mongoose.Schema({
   createdAt:  { type: Date, default: Date.now },
 }, { timestamps: true });
 
-// Virtual: did team1 win?
+// Virtual: did team1 win?//
 matchSchema.virtual('team1Won').get(function () {
   return this.winner === this.team1;
 });
