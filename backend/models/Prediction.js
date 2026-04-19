@@ -15,7 +15,7 @@ const predictionSchema = new mongoose.Schema({
   predictedWinner:     { type: String, required: true },
   confidence:          { type: Number, required: true },
 
-  // Explainability
+  // Explainability//
   keyFactors:     [{ label: String, impact: String, value: String, weight: Number }],
   modelBreakdown: { type: Map, of: Number },
   featureImportance: { type: Map, of: Number },
