@@ -38,5 +38,4 @@ const playerSchema = new mongoose.Schema({
   updatedAt:   { type: Date, default: Date.now },
 }, { timestamps: true });
 
-
 module.exports = mongoose.model('Player', playerSchema);
