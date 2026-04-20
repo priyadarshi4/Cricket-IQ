@@ -3,7 +3,7 @@
  * Lightweight rate limiter and request logger — no external deps.
  */
 
-// ── In-memory rate limiter (replace with redis-rate-limiter in production) ──//
+// ── In-memory rate limiter (replace with redis-rate-limiter in production) ──
 const hitMap = new Map();   // ip -> [timestamps]
 
 function rateLimiter(maxReqs = 60, windowMs = 60_000) {
