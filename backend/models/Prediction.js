@@ -9,6 +9,7 @@ const predictionSchema = new mongoose.Schema({
   tossDecision: String,
   matchType:  { type: String, default: 'league' },
 
+  
   // Model outputs//
   team1WinProbability: { type: Number, required: true },
   team2WinProbability: { type: Number, required: true },
