@@ -2,6 +2,7 @@ import axios from 'axios';
 
 const API = axios.create({ baseURL: '/api' });
 
+
 export const predictMatch = (payload) => API.post('/predict', payload);
 export const fetchTeams = () => API.get('/teams');
 export const fetchTeamStats = (name) => API.get(`/team-stats/${encodeURIComponent(name)}`);
