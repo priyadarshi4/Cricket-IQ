@@ -11,6 +11,7 @@ import LiveSimPage   from './pages/LiveSimPage';
 import HistoryPage   from './pages/HistoryPage';
 import './App.css';
 
+
 const TICKER_ITEMS = [
   '🏏 V Kohli — 8,014 runs · All-time IPL top scorer',
   '🎯 YS Chahal — 213 wickets · All-time leading wicket-taker',
