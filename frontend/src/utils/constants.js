@@ -12,6 +12,7 @@ export const TEAM_COLORS = {
   'Lucknow Super Giants': { primary: '#A72B72', secondary: '#FBDB34', accent: '#A72B72' },
 };
 
+
 export const TEAM_ABBR = {
   'Mumbai Indians': 'MI',
   'Chennai Super Kings': 'CSK',
