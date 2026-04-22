@@ -25,7 +25,7 @@ matchSchema.virtual('team1Won').get(function () {
   return this.winner === this.team1;
 });
 
-// Static: win rate for a team in a venue
+// Static: win rate for a team in a venue//
 matchSchema.statics.venueWinRate = async function (team, venue) {
   const [total, wins] = await Promise.all([
     this.countDocuments({ venue, $or: [{ team1: team }, { team2: team }] }),
