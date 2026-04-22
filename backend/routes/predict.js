@@ -15,6 +15,7 @@ function getH2HRate(team1, team2) {
   return t1w / h2h.total;
 }
 
+
 function getTeamForm(team) {
   const recent = data.recent_matches.filter(m => m.team1 === team || m.team2 === team).slice(-5);
   if (!recent.length) return 0.5;
