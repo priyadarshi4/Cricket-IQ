@@ -9,7 +9,6 @@ function getH2HRate(team1, team2) {
   return t1wins / h2h.total;
 }
 
-
 function getRecentForm(team, n = 5) {
   const data = SEASON_DATA[team];
   if (!data || data.length === 0) return 0.5;
