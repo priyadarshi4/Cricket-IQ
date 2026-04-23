@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const playerSchema = new mongoose.Schema({
   name:  { type: String, required: true, unique: true, index: true },
 
+  
   batting: {
     innings:    { type: Number, default: 0 },
     runs:       { type: Number, default: 0 },
