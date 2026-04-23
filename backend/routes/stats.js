@@ -15,7 +15,7 @@ router.get('/teams', (req, res) => {
   res.json({ success: true, data: teams });
 });
 
-// GET /api/teams/:name//
+// GET /api/teams/:name
 router.get('/teams/:name', (req, res) => {
   const name  = decodeURIComponent(req.params.name);
   const stats = data.team_stats[name];
