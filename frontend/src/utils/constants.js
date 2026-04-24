@@ -11,7 +11,6 @@ export const TEAM_COLORS = {
   'Royal Challengers Bengaluru': { primary: '#EC1C24', secondary: '#000000', accent: '#A4072B' },
   'Lucknow Super Giants': { primary: '#A72B72', secondary: '#FBDB34', accent: '#A72B72' },
 };
-
 export const TEAM_ABBR = {
   'Mumbai Indians': 'MI',
   'Chennai Super Kings': 'CSK',
