@@ -13,5 +13,4 @@ export const fetchRecentMatches = (limit = 20) => API.get(`/recent-matches?limit
 export const fetchLeaderboard = () => API.get('/leaderboard');
 export const fetchSeasonPerformance = (team) => API.get(`/season-performance${team ? `?team=${encodeURIComponent(team)}` : ''}`);
 
-
 export default API;
