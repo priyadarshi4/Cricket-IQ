@@ -49,7 +49,7 @@ export function runPrediction({ team1, team2, venue, tossWinner, tossDecision, m
   const p1 = Math.min(0.84, Math.max(0.16, prob));
   const confidence = Math.min(97, Math.round(50 + Math.abs(p1 - 0.5) * 100));
 
-  // Build explainable factors
+  // Build explainable factors//
   const factors = [];
 
   if (h2hRate > 0.55)
