@@ -4,7 +4,6 @@ import { IPL_TEAMS, TEAM_ABBR } from '../utils/constants';
 
 const TT = { background: '#0e1120', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 8, fontSize: 12, color: '#e8eaf6' };
 
-
 function updateProb(state) {
   const { inning, over, ball, runs, wickets, target } = state;
   const ballsUsed = over * 6 + ball;
