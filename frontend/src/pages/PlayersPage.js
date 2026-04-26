@@ -13,7 +13,6 @@ export default function PlayersPage() {
   const batChartData = TOP_BATTERS.slice(0, 10).map(b => ({ name: b.batter.split(' ').pop(), runs: b.runs }));
   const bowlChartData = TOP_BOWLERS.slice(0, 10).map(b => ({ name: b.bowler.split(' ').pop(), wickets: b.wickets }));
 
-  
   const player = selectedPlayer
     ? (tab === 'batting' ? TOP_BATTERS.find(b => b.batter === selectedPlayer) : TOP_BOWLERS.find(b => b.bowler === selectedPlayer))
     : null;
