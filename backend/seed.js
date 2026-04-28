@@ -13,7 +13,7 @@ const mongoose = require('mongoose');
 const fs       = require('fs');
 const path     = require('path');
 
-// Minimal CSV parser (no deps needed)s
+// Minimal CSV parser (no deps needed)
 function parseCSV(filePath) {
   const lines = fs.readFileSync(filePath, 'utf8').split('\n').filter(Boolean);
   const headers = lines[0].split(',').map(h => h.trim().replace(/"/g, ''));
