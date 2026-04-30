@@ -16,7 +16,6 @@ router.get('/stats', async (req, res, next) => {
       predStats = { total, ...accuracy };
     } catch { /* DB offline */ }
 
-
     res.json({
       success: true,
       data: {
