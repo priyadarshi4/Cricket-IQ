@@ -4,6 +4,7 @@ import { runPrediction } from '../utils/prediction';
 import { usePredictionHistory } from '../context/PredictionHistory';
 import { useToast } from '../context/ToastContext';
 
+
 const IMPACT_COLORS = { positive: '#00c49a', negative: '#e63946', neutral: '#f77f00' };
 const IMPACT_SIGN   = { positive: '+', negative: '−', neutral: '~' };
 function ProbCircle({ label, pct, color }) {
