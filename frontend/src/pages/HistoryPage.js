@@ -24,7 +24,6 @@ function AccuracyRing({ pct, size = 80 }) {
   );
 }
 
-
 export default function HistoryPage() {
   const { history, clearHistory } = usePredictionHistory();
   const [filter, setFilter] = useState('all');
