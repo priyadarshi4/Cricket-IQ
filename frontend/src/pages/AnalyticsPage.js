@@ -15,7 +15,7 @@ export default function AnalyticsPage() {
   const [h2hT2, setH2HT2] = useState('Chennai Super Kings');
   const [seasonTeam, setSeasonTeam] = useState('Mumbai Indians');
 
-  // Win Rate bar data//
+  // Win Rate bar data
   const wrData = IPL_TEAMS
     .filter(t => TEAM_STATS[t] && TEAM_STATS[t].total_matches >= 40)
     .map(t => ({ team: TEAM_ABBR[t] || t, wr: TEAM_STATS[t].win_rate, matches: TEAM_STATS[t].total_matches }))
