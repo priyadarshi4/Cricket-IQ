@@ -5,6 +5,7 @@ const { requireApiKey } = require('../middleware');
 // All admin routes require API key
 router.use(requireApiKey);
 
+
 // GET /api/admin/stats  — system overview
 router.get('/stats', async (req, res, next) => {
   try {
