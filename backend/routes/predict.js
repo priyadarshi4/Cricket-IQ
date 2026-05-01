@@ -6,6 +6,7 @@ const path     = require('path');
 // Load data once
 const data = JSON.parse(fs.readFileSync(path.join(__dirname, '../data/cricket_data.json'), 'utf8'));
 
+
 // ── Prediction engine ──────────────────────────────────────────────────
 function getH2HRate(team1, team2) {
   const k1 = `${team1}|${team2}`, k2 = `${team2}|${team1}`;
