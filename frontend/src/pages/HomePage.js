@@ -15,7 +15,8 @@ export default function HomePage() {
     .map(([name, s]) => ({ name, ...s }))
     .sort((a, b) => b.win_rate - a.win_rate)
     .slice(0, 5);
-   
+ 
+    
   return (
     <div className="fade-up">
       {/* Hero */}
