@@ -6,8 +6,7 @@ const TOOLTIP_STYLE = { background: '#0e1120', border: '1px solid rgba(255,255,2
 
 export default function TeamsPage() {
   const [selected, setSelected] = useState(null);
-  
-  
+   
   const stats = selected ? TEAM_STATS[selected] : null;
   const seasonData = selected ? (SEASON_DATA[selected] || []) : [];
 
