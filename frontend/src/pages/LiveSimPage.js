@@ -8,8 +8,7 @@ function updateProb(state) {
   const { inning, over, ball, runs, wickets, target } = state;
   const ballsUsed = over * 6 + ball;
   const ballsRem  = 120 - ballsUsed;
-
-  
+ 
   if (inning === 1) {
     const rr = ballsUsed > 0 ? (runs / ballsUsed) * 6 : 8.5;
     const projected = runs + (rr * ballsRem / 6);
