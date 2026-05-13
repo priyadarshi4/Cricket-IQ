@@ -9,7 +9,6 @@ const MEDALS = ['🥇', '🥈', '🥉'];
 export default function PlayersPage() {
   const [tab, setTab] = useState('batting');
   const [selectedPlayer, setSelectedPlayer] = useState(null);
-
   const batChartData = TOP_BATTERS.slice(0, 10).map(b => ({ name: b.batter.split(' ').pop(), runs: b.runs }));
   const bowlChartData = TOP_BOWLERS.slice(0, 10).map(b => ({ name: b.bowler.split(' ').pop(), wickets: b.wickets }));
   const player = selectedPlayer
